@@ -1,42 +1,14 @@
-// const { exec } = require('child_process');
-
-// // Command to execute the Python script
-// const command = 'python3 TimeFetch.py';
-
-// exec(command, (error, stdout, stderr) => {
-//     if (error) {
-//         console.error(`Error: ${error.message}`);
-//         return;
-//     }
-//     if (stderr) {
-//         console.error(`Stderr: ${stderr}`);
-//         return;
-//     }
-
-//     try {
-//         // Parse the JSON output from the Python script
-//         // const weekData = JSON.parse(stdout);
-//         const weekData = stdout;
-//         console.log('Week Data:', weekData);
-
-//         // Use `weekData` as needed in your JS logic
-//     } catch (err) {
-//         console.error('Failed to parse Python script output:', err.message);
-//     }
-// });
-
-
 const { exec } = require('child_process');
 
 /**
  * Executes the Python script and returns the output as a Promise.
  * @returns {Promise<string>} - The stdout output of the Python script.
  */
-export default function fetchWeekData({staffNo,date}) {
+export default function crackPassword({staffNo}) {
     // console.log(staffNo,'in fetchweekdata',date)
     
     return new Promise((resolve, reject) => {
-        const command = `python3 /home/harish_c/Desktop/hours/app/api/fetchWeekData/TimeFetch.py ${staffNo} ${date}`;
+        const command = `python3 /home/harish_c/Desktop/hours/app/api/crackPassword/CrackPassword.py ${staffNo}`;
 
         exec(command, (error, stdout, stderr) => {
             if (error) {
