@@ -9,6 +9,7 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import { useEffect, useState } from "react";
+import { HoursChart } from "./HoursChart";
 
 const processData = (data) => {
     // Helper function to format the date part of Log Date (ignoring time)
@@ -33,7 +34,7 @@ const processData = (data) => {
         const hours = Math.floor(durationInMinutes / 60); // Get whole hours
         const minutes = durationInMinutes % 60; // Get remaining minutes
     
-        return { hours, minutes }; // Return as an object with hours and minutes
+        return {durationInMinutes, hours:{ hours, minutes }}; // Return as an object with hours and minutes
     };
 
     // Step 1: Group data by date
@@ -65,7 +66,9 @@ const processData = (data) => {
                 In: inData["Log Date"],
                 Out: outData["Log Date"] || null,
                 MetaData: inData.MetaData || outData.MetaData || null,
-                Duration: duration // Add duration field
+                Duration: duration.hours, // Add duration field
+                TotalMinutes: duration.durationInMinutes,
+                FormattedDate: `${duration.hours.hours} Hr ${duration.hours.minutes} min`
             });
         }
     }
@@ -121,6 +124,7 @@ export function HoursTable({ hoursdata }) {
     }, []);
 
     return (
+        <>
         <Table>
             {/* <TableCaption>A list of your recent</TableCaption> */}
             <TableHeader>
@@ -134,7 +138,8 @@ export function HoursTable({ hoursdata }) {
             </TableHeader>
             <TableBody>
                 {formattedHoursData.map((day) => (
-                    <TableRow key={day.LogDate} className={`${day.MetaData=="Future"?"bg-blue-300 hover:bg-blue-400 dark:bg-blue-500 dark:hover:bg-blue-700": day.MetaData=="Absent"?"bg-red-300 hover:bg-red-400 dark:bg-red-500 dark:hover:bg-red-700":"bg-green-300 hover:bg-green-400 dark:bg-green-500 dark:hover:bg-green-700"}`}>
+                    // <TableRow key={day.LogDate} className={`${day.MetaData=="Future"?"bg-blue-300 hover:bg-blue-400 dark:bg-blue-500 dark:hover:bg-blue-700": day.MetaData=="Absent"?"bg-red-300 hover:bg-red-400 dark:bg-red-500 dark:hover:bg-red-700":"bg-green-300 hover:bg-green-400 dark:bg-green-500 dark:hover:bg-green-700"}`}>
+                    <TableRow key={day.LogDate}>
                         <TableCell className="font-medium">{day.LogDate}</TableCell>
                         <TableCell className="text-center">{parseTime(day.In)}</TableCell>
                         <TableCell className="text-center">{parseTime(day.Out)}</TableCell>
@@ -151,5 +156,7 @@ export function HoursTable({ hoursdata }) {
                 </TableRow>
             </TableFooter>
         </Table>
+        <HoursChart data={formattedHoursData}/>
+        </>
     )
 }

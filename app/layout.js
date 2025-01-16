@@ -19,6 +19,16 @@ export const metadata = {
   description: "Calculate hours completed and full details of staff in and out time",
 };
 
+const themesArray = [
+  { theme: "light", name: "Light" },
+  { theme: "dark", name: "Dark" },
+  { theme: "system", name: "System" },
+  { theme: "rose", name: "Rose" },
+  { theme: "rose-dark", name: "Rose Dark" },
+  { theme: "blue", name: "Blue" },
+  { theme: "blue-dark", name: "Blue Dark" },
+];
+
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
@@ -29,10 +39,11 @@ export default function RootLayout({ children }) {
             attribute="class"
             defaultTheme="system"
             enableSystem
+            themes={themesArray.map((theme) => theme.theme)} // Extract string values
             disableTransitionOnChange
           >
           <Toaster />
-          <Header/>
+          <Header themes={themesArray}/>
           {children}
         </ThemeProvider>
       </body>
